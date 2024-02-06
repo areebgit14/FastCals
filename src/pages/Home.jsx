@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // You may need to install axios via npm or yarn
+import axios from 'axios'; 
 
 function Home() {
   const [inputs, setInputs] = useState({
