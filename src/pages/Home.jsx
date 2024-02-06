@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import getNearbyRestaurants from './NearbyRestaurants';
+import axios from 'axios'; // You may need to install axios via npm or yarn
 
 function Home() {
   const [inputs, setInputs] = useState({
@@ -15,47 +15,40 @@ function Home() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
+  
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-
-          console.log('Submitted inputs:', { ...inputs, userLocation });
-          setLocation(userLocation);
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          console.log('Submitted inputs (without location):', inputs);
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+  
+        const userLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+  
+        console.log('Submitted inputs:', { ...inputs, userLocation });
+        setLocation(userLocation);
+  
+        // Now, make the API call to fetch nearby restaurants
+        try {
+          const response = await axios.get(
+            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLocation.latitude},${userLocation.longitude}&radius=1500&type=restaurant&key=${apiKey}`
+          );
+  
+          setNearbyRestaurants(response.data.results);
+        } catch (apiError) {
+          console.error('Error fetching nearby restaurants:', apiError);
         }
-      );
+      } catch (error) {
+        console.error('Error getting location:', error);
+        console.log('Submitted inputs (without location):', inputs);
+      }
     } else {
       console.error('Geolocation is not supported by this browser.');
       console.log('Submitted inputs (without location):', inputs);
     }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (location) {
-        try {
-          const restaurants = await getNearbyRestaurants(
-            apiKey,
-            location.latitude,
-            location.longitude
-          );
-          setNearbyRestaurants(restaurants);
-        } catch (error) {
-          console.error('Error fetching nearby restaurants:', error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [location, apiKey]);
 
   const handleInputChange = (fieldName, value) => {
     setInputs((prevInputs) => ({ ...prevInputs, [fieldName]: value }));
@@ -116,19 +109,18 @@ function Home() {
             <p>Longitude: {location.longitude}</p>
           </div>
         )}
-
-      {nearbyRestaurants.length > 0 && (
-        <div className="nearby-restaurants">
-          <h2>Nearby Restaurants:</h2>
-          <ul>
-            {nearbyRestaurants.map((place, index) => (
-              <li key={index}>
-                <pre>{JSON.stringify(place, null, 2)}</pre>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+          <div className="nearby-restaurants">
+            <h2>Nearby Restaurants:</h2>
+            <ul>
+              {nearbyRestaurants.map((place, index) => (
+                <li key={index}>
+                  <p>{place.name}</p>
+                  <p>Rating: {place.rating}</p>
+                  <p>Address: {place.vicinity}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
       </div>
     </div>
   );
