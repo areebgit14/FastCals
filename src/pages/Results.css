@@ -1,0 +1,87 @@
+.results-container {
+  padding: 20px;
+}
+
+.intro-text,
+.address-text,
+.heading {
+  font-family: 'Titillium Web', Arial, sans-serif;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.layout-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.nearby-restaurants {
+  flex: 1;
+  transition: transform 0.3s ease;
+  overflow-y: auto; /* Enable vertical scrolling within the nearby restaurants section */
+}
+
+.move-left {
+  transform: translateX(-36%);
+}
+
+.restaurant-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant-item {
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.restaurant-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.selected-restaurant {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: calc(100% - 400px);
+  height: 100%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.selected-restaurant.move-left {
+  transform: translateX(-40%);
+}
+
+.restaurant-box:hover {
+  background-color: #f9f9f9;
+}
+
+.restaurant-logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.restaurant-info {
+  flex: 1;
+}
+
+.selected-heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.selected-address {
+  font-size: 16px;
+}

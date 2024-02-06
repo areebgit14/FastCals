@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios'; 
+import './Results.css';
 
 async function getCurrentPosition() {
   return new Promise((resolve, reject) => {
@@ -15,6 +16,8 @@ function Results() {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState([]);
   const [nearbyRestaurants, setNearbyRestaurants] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [moveLeft, setMoveLeft] = useState(false);
   const apiKey = 'AIzaSyAE7jbNly4VYg35IaEa2gALlDt0SyRHfkw';
 
 
@@ -56,25 +59,48 @@ function Results() {
     fetchNearbyRestaurants();
   }, [location]); // Run the effect when location changes
 
+  const handleRestaurantClick = (restaurant) => {
+    console.log('Restaurant clicked:', restaurant);
+    if (selectedRestaurant === restaurant) {
+      setSelectedRestaurant(null);
+      setMoveLeft(false); // Bring everything back to the middle
+    } else {
+      setSelectedRestaurant(restaurant);
+      setMoveLeft(true); // Move nearby restaurants to the left
+    }
+  };
 
   return (
-    <div>
-      <p>{address.length > 0 && address[0].formatted_address}</p>
-      <div className="nearby-restaurants">
-            <h2>Nearby Restaurants:</h2>
-            <ul>
-              {nearbyRestaurants.map((place, index) => (
-                <li key={index}>
-                  <p>{place.name}</p>
-                  <p>Rating: {place.rating}</p>
-                  <p>Address: {place.vicinity}</p>
-                </li>
-              ))}
-            </ul>
+    <div className="results-container">
+      <p className="intro-text">We've found you some great options for your calorie and protein goals near:</p>
+      <p className="address-text">{address.length > 0 && address[0].formatted_address}</p>
+      <h2 className="heading">Nearby Restaurants:</h2>
+      <div className={`layout-container ${moveLeft ? 'move-left' : ''}`}>
+        <div className="nearby-restaurants">
+          <div className="restaurant-list">
+            {nearbyRestaurants.map((place, index) => (
+              <div key={index} className="restaurant-item" onClick={() => handleRestaurantClick(place)}>
+                <div className="restaurant-box">
+                  <img src={place.icon} alt={place.name} className="restaurant-logo" />
+                  <div className="restaurant-info">
+                    <p className="restaurant-name">{place.name}</p>
+                    <p className="restaurant-rating">Rating: {place.rating}</p>
+                    <p className="restaurant-address">Address: {place.vicinity}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+        {selectedRestaurant && (
+          <div className={`selected-restaurant ${moveLeft ? 'move-left' : ''}`}>
+            <h2 className="selected-heading">{selectedRestaurant.name}</h2>
+            <p className="selected-address">Address: {selectedRestaurant.vicinity}</p>
+            {/* Add menu and other restaurant information here */}
+          </div>
+        )}
+      </div>
     </div>
-    
   );
 }
-
 export default Results;
