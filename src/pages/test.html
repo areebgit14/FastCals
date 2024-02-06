@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Maps Nearby Restaurants</title>
+  <style>
+    #results {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Nearby Restaurants</h1>
+<div id="results"></div>
+
+<script>
+  var service;
+
+  function initialize() {
+    var pyrmont = new google.maps.LatLng(45.271110, -75.856850);
+
+    var request = {
+      location: pyrmont,
+      radius: '5000',
+      type: ['restaurant']
+    };
+
+    service = new google.maps.places.PlacesService(document.createElement('div'));
+    service.nearbySearch(request, callback);
+  }
+
+  function callback(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      // Display information on the webpage
+      displayResults(results);
+    } else {
+      console.error('Places service failed:', status);
+    }
+  }
+
+  function displayResults(results) {
+    var resultsContainer = document.getElementById('results');
+    
+    results.forEach(function(place, index) {
+      var resultItem = document.createElement('div');
+      resultItem.innerHTML = '<strong>' + (index + 1) + '. ' + place.name + '</strong><br>' +
+                             'Address: ' + place.vicinity + '<br><br>';
+      resultsContainer.appendChild(resultItem);
+    });
+  }
+
+  // Call the initialize function when the page loads
+  initialize();
+</script>
+
+<!-- Include the Google Maps JavaScript API with the provided API key -->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAE7jbNly4VYg35IaEa2gALlDt0SyRHfkw&libraries=places&callback=initialize">
+</script>
+
+</body>
+</html>
