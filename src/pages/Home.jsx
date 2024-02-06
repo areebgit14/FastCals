@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate();
+
   const [inputs, setInputs] = useState({
-    currentCalories: '',
-    calorieGoals: '',
-    currentProtein: '',
-    proteinGoals: '',
+    caloriesNeeded: '',
+    proteinNeeded: ''
   });
 
   const [location, setLocation] = useState(null);
@@ -29,7 +30,7 @@ function Home() {
   
         console.log('Submitted inputs:', { ...inputs, userLocation });
         setLocation(userLocation);
-  
+        navigate(`/results/${inputs.caloriesNeeded}/${inputs.proteinNeeded}`);
         // Now, make the API call to fetch nearby restaurants
         try {
           const response = await axios.get(
@@ -65,50 +66,26 @@ function Home() {
       <div className="container-page">
         <form onSubmit={handleSubmit}>
           <div className="macro-inputs">
-            <label htmlFor="currentCalories">Current Calories:</label>
+            <label htmlFor="caloriesNeeded">Calories Needed:</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter Calories So Far Today"
-              onChange={(e) => handleInputChange('currentCalories', e.target.value)}
+              placeholder="Enter The Amount Of Calories You Need (cals)"
+              onChange={(e) => handleInputChange('caloriesNeeded', e.target.value)}
             />
 
-            <label htmlFor="calorieGoals">Calorie Goal:</label>
+            <label htmlFor="proteinNeeded">Protein Needed:</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter Calorie Goal"
-              onChange={(e) => handleInputChange('calorieGoals', e.target.value)}
+              placeholder="Enter The Amount Of Protein You Need (g)"
+              onChange={(e) => handleInputChange('proteinNeeded', e.target.value)}
             />
-
-            <label htmlFor="currentProtein">Current Protein:</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter Protein So Far Today"
-              onChange={(e) => handleInputChange('currentProtein', e.target.value)}
-            />
-
-            <label htmlFor="proteinGoals">Protein Goal:</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter Protein Goal"
-              onChange={(e) => handleInputChange('proteinGoals', e.target.value)}
-            />
-
             <button type="submit" className="btn btn-primary">
               Submit
             </button>
           </div>
         </form>
-
-        {location && (
-          <div className="location-info">
-            <p>Latitude: {location.latitude}</p>
-            <p>Longitude: {location.longitude}</p>
-          </div>
-        )}
           <div className="nearby-restaurants">
             <h2>Nearby Restaurants:</h2>
             <ul>
