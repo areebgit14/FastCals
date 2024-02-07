@@ -1,5 +1,6 @@
 .results-container {
   padding: 20px;
+  width: calc(100% - 20px);
 }
 
 .intro-text,
@@ -15,25 +16,18 @@
   overflow: hidden;
 }
 
-.nearby-restaurants {
-  flex: 1;
-  transition: transform 0.3s ease;
-  overflow-y: auto; /* Enable vertical scrolling within the nearby restaurants section */
-}
-
 .move-left {
-  transform: translateX(-36%);
+  transform: translateX(-25%);
 }
 
 .restaurant-list {
   display: flex;
   flex-direction: column;
+  max-height: 400px; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  align-items: center; /* Center items horizontally */
 }
 
-.restaurant-item {
-  cursor: pointer;
-  margin-bottom: 20px;
-}
 
 .restaurant-box {
   display: flex;
@@ -42,15 +36,24 @@
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  width: 400px;
+  /* width: 400px; Remove this line */
   margin: 0 auto;
+}
+
+
+.restaurant-item {
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 50%; /* Set a fixed width for the clickable area */
+  text-align: center; /* Center the content inside the clickable area */
 }
 
 .selected-restaurant {
   position: absolute;
   top: 0;
   left: 100%;
-  width: calc(100% - 400px);
+  width: calc(100% - 20px);
   height: 100%;
   background-color: white;
   padding: 20px;
@@ -59,8 +62,8 @@
   overflow-y: auto;
 }
 
-.selected-restaurant.move-left {
-  transform: translateX(-40%);
+.restaurant-box.move-left {
+  transform: translateX(-20%);
 }
 
 .restaurant-box:hover {
