@@ -72,9 +72,7 @@ function Results() {
 
   return (
     <div className="results-container">
-      <p className="intro-text">We've found you some great options for your calorie and protein goals near:</p>
-      <p className="address-text">{address.length > 0 && address[0].formatted_address}</p>
-      <h2 className="heading">Nearby Restaurants:</h2>
+      <p className="intro-text">We've found you some great options for your calorie and protein goals near: {address.length > 0 && address[0].formatted_address}</p>
       <div className={`layout-container ${moveLeft ? 'move-left' : ''}`}>
         <div className="nearby-restaurants">
           <div className="restaurant-list">
@@ -95,7 +93,7 @@ function Results() {
         {selectedRestaurant && (
           <div className={`selected-restaurant ${moveLeft ? 'move-left' : ''}`}>
             <h2 className="selected-heading">{selectedRestaurant.name}</h2>
-            <p className="selected-address">Address: {selectedRestaurant.vicinity}</p>
+            <p> Address: {selectedRestaurant.vicinity}</p>
             {/* Add menu and other restaurant information here */}
           </div>
         )}

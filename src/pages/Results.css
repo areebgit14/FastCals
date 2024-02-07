@@ -17,13 +17,13 @@
 }
 
 .move-left {
-  transform: translateX(-25%);
+  transform: translateX(-37%);
 }
 
 .restaurant-list {
   display: flex;
   flex-direction: column;
-  max-height: 400px; /* Set a maximum height */
+  max-height: calc(100vh - 210px); /* Set a maximum height */
   overflow-y: auto; /* Enable vertical scrolling */
   align-items: center; /* Center items horizontally */
 }
@@ -36,7 +36,6 @@
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  /* width: 400px; Remove this line */
   margin: 0 auto;
 }
 
@@ -45,7 +44,7 @@
   cursor: pointer;
   margin-bottom: 20px;
   display: inline-block;
-  width: 50%; /* Set a fixed width for the clickable area */
+  width: 25%; /* Set a fixed width for the clickable area */
   text-align: center; /* Center the content inside the clickable area */
 }
 
@@ -60,10 +59,6 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-}
-
-.restaurant-box.move-left {
-  transform: translateX(-20%);
 }
 
 .restaurant-box:hover {
